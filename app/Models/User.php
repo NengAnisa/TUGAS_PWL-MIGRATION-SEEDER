@@ -14,19 +14,18 @@ use Illuminate\Notifications\Notifiable;
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
-    /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable;
+     use HasFactory;
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
+    protected $primaryKey = 'npm';
+    public $incrementing = false;
+    protected $keyType = 'int';
+
+    protected $fillable = [
+        'npm','username','first_name','last_name','email','password'
+    ];
+
+    public function loans()
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        return $this->hasMany(Loan::class, 'user_npm', 'npm');
     }
 }
